@@ -40,7 +40,14 @@ class PenggunaController extends Controller
 
     public function update(Request $request, User $pengguna)
     {
-        $pengguna->update($request->all());
+        $data = $request->all();
+        // Jika password diisi, hash dan update, jika tidak, hapus dari $data
+        if (!empty($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        } else {
+            unset($data['password']);
+        }
+        $pengguna->update($data);
         return redirect()->route('admin.pengguna.index')->with('success', 'Pengguna berhasil diupdate.');
     }
 

@@ -34,71 +34,24 @@ class AuthController extends Controller
             ]);
         }
 
-        // Cek level user
-        if (!in_array($user->level, ['admin', 'operator'])) {
+        //Cek level user
+        if (!in_array($user->level, ['pelanggan', 'pengguna', 'admin', 'operator'])) {
             return redirect()->back()->withErrors([
                 'email' => 'Hanya admin atau operator yang dapat login.',
             ]);
         }
 
-        // Login user
         Auth::login($user);
 
         // Redirect berdasarkan level user
-        return $user->level === 'admin'
-            ? redirect('/admin/dashboard')
-            : redirect('/operator/dashboard');
+        return $user->level === 'pelanggan' || 'pengguna'
+            ? redirect('/form_pesan')
+            : redirect('/admin/dashboard');
     }
 
-    // Login API
-    public function apiLogin(Request $request)
+    public function formRegister()
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        // Mencari user berdasarkan email
-        $user = User::where('email', $request->email)->first();
-
-        // Cek apakah user ditemukan
-        if (!$user) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Email tidak ditemukan.',
-            ], 404);
-        }
-
-        // Cek apakah password yang tersimpan perlu diubah (belum terenkripsi)
-        if ($user->level === 'pelanggan' && strlen($user->password) < 60) {
-            $user->password = Hash::make($request->password);
-            $user->save();
-        }
-
-        // Cek apakah password yang diberikan benar
-        if (!Hash::check($request->password, $user->password)) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Password salah.',
-            ], 401);
-        }
-
-        // Generate token API
-        $tokenResult = $user->createToken('API Token');
-        $token = $tokenResult->plainTextToken;  // Get the plain text token
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Login berhasil.',
-            'data' => [
-                'id' => $user->id,
-                'nama' => $user->nama,
-                'username' => $user->username,
-                'email' => $user->email,
-                'level' => $user->level,
-                'token' => $token,  // Send the plain text token
-            ]
-        ], 200);
+        return view('form_pesan'); // Pastikan ada file: resources/views/auth/register.blade.php
     }
 
     // Registrasi Pengguna Baru
@@ -141,5 +94,14 @@ class AuthController extends Controller
                 'token' => $token,
             ]
         ], 201);
+    }
+
+    // Proses Logout
+    public function destroy(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('auth.login'); // Redirect ke halaman utama setelah logout
     }
 }

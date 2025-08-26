@@ -17,6 +17,10 @@
                     <i class="fas fa-plus me-2"></i>Tambah Menu
                 </a>
             </div>
+            <button id="btnGenerateQR" class="btn btn-success mb-3">
+                <i class="fas fa-qrcode me-2"></i>Generate QR Code
+            </button>
+
         </div>
 
         <!-- Alert Messages -->
@@ -49,6 +53,7 @@
                                 <th><i class="fas fa-tag me-2"></i>Harga</th>
                                 <th><i class="fas fa-boxes me-2"></i>Stok</th>
                                 <th><i class="fas fa-list me-2"></i>Kategori</th>
+                                {{-- <th><i class="fas fa-qrcode me-2"></i>Barcode</th> --}}
                                 <th class="text-center"><i class="fas fa-cogs me-2"></i>Aksi</th>
                             </tr>
                         </thead>
@@ -94,17 +99,28 @@
                                             <span class="text-muted fst-italic">Tidak ada data</span>
                                         @endif
                                     </td>
-                                    @if ($menu->kategori)
-                                        <span class="badge
+                                    <td>
+                                        @if ($menu->kategori)
+                                            <span class="badge
                                                 bg-info">
-                                            <i class="fas fa-tag me-1"></i>{{ $menu->kategori }}
-                                        </span>
-                                    @else
-                                        <span class="badge bg-secondary">
-                                            <i class="fas fa-tag me-1"></i>Umum
-                                        </span>
-                                    @endif
+                                                <i class="fas fa-tag me-1"></i>{{ $menu->kategori }}
+                                            </span>
+                                        @else
+                                            <span class="badge bg-secondary">
+                                                <i class="fas fa-tag me-1"></i>Umum
+                                            </span>
+                                        @endif
                                     </td>
+                                    {{-- <td>
+                                        @if ($menu->barcode)
+                                            <img src="data:image/png;base64,{{ DNS1D::getBarcodePNG($menu->barcode, 'C128') }}"
+                                                alt="Barcode {{ $menu->barcode }}" class="img-fluid"
+                                                style="max-height: 50px;">
+                                            <div class="text-muted  small">{{ $menu->barcode }}</div>
+                                        @else
+                                            <span class="text-muted fst-italic">Tidak ada data</span>
+                                        @endif
+                                    </td> --}}
                                     <td class="text-center">
                                         <div class="btn-group" role="group">
                                             <a href="{{ route('admin.menus.edit', $menu->id) }}"
@@ -244,5 +260,45 @@
         function confirmDelete(menuName) {
             return confirm(`Apakah Anda yakin ingin menghapus menu "${menuName}"?`);
         }
+    </script>
+@endpush
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const btnGenerateQR = document.getElementById('btnGenerateQR');
+
+            btnGenerateQR.addEventListener('click', function() {
+                btnGenerateQR.disabled = true; // Disable sementara
+                btnGenerateQR.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Loading...';
+
+                fetch("{{ route('admin.menus.generateQRCode') }}")
+                    .then(response => response.text())
+                    .then(html => {
+                        // Masukkan HTML modal ke body
+                        const modalContainer = document.createElement('div');
+                        modalContainer.innerHTML = html;
+                        document.body.appendChild(modalContainer);
+
+                        // Tampilkan modal
+                        const qrModalEl = document.getElementById('qrModal');
+                        const qrModal = new bootstrap.Modal(qrModalEl);
+                        qrModal.show();
+
+                        // Hapus modal saat ditutup untuk menghindari duplikasi
+                        qrModalEl.addEventListener('hidden.bs.modal', function() {
+                            qrModalEl.remove();
+                        });
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        alert('Gagal generate QR Code');
+                    })
+                    .finally(() => {
+                        btnGenerateQR.disabled = false;
+                        btnGenerateQR.innerHTML = '<i class="fas fa-qrcode me-2"></i>Generate QR Code';
+                    });
+            });
+        });
     </script>
 @endpush

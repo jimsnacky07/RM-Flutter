@@ -36,7 +36,11 @@ class PesananController extends Controller
 
         // Menyimpan data pesanan baru
         Pesanan::create($request->only([
-            'user_id', 'total_harga', 'status', 'metode_pembayaran', 'catatan'
+            'user_id',
+            'total_harga',
+            'status',
+            'metode_pembayaran',
+            'catatan'
         ]));
 
         // Redirect ke halaman daftar pesanan dengan pesan sukses
@@ -64,7 +68,7 @@ class PesananController extends Controller
     {
         // Validasi status pesanan
         $request->validate([
-            'status' => 'required|in:pending,diproses,selesai',
+            'status' => 'required',
         ]);
 
         // Mengambil data pesanan berdasarkan ID dan memperbarui statusnya

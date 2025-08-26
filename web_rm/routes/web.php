@@ -34,6 +34,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     // Menu (Admin)
     Route::resource('menus', AdminMenuController::class)->except(['show']);
+    Route::get('/menus/generateQRCode', [AdminMenuController::class, 'generateQRCode'])->name('menus.generateQRCode');
 
     // Laporan Penjualan Bulanan (Admin)
     Route::get('/laporan-bulanan', [LaporanController::class, 'laporanBulanan'])
@@ -47,6 +48,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 
 // ================== OPERATOR ==================
+// Frontend Routes
+Route::group(['namespace' => 'Frontend', 'as' => 'frontend.'], function () {
+    Route::get('/pemesanan', [App\Http\Controllers\Frontend\MenuController::class, 'index'])->name('menu.index');
+    Route::post('/order', [App\Http\Controllers\Frontend\OrderController::class, 'store'])->name('order.store');
+});
+
 Route::prefix('operator')->name('operator.')->group(function () {
     Route::get('/dashboard', [OperatorController::class, 'dashboard'])->name('dashboard');
 

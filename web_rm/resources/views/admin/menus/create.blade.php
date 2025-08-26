@@ -82,79 +82,80 @@
                                             <i class="fas fa-exclamation-circle me-1"></i>{{ $message }}
                                         </div>
                                     @enderror
+                                </div>
+                            </div>
 
-                                    <!-- Kategori -->
-                                    <div class="mb-4">
-                                        <label for="kategori" class="form-label fw-medium">
-                                            <i class="fas fa-list me-2"></i>Kategori
-                                        </label>
-                                        <select name="kategori" id="kategori" class="form-control">
-                                            <option value="">Pilih Kategori</option>
-                                            <option value="Makanan Berat">Makanan Berat</option>
-                                            <option value="Makanan Ringan">Makanan Ringan</option>
-                                            <option value="Minuman Panas">Minuman Panas</option>
-                                            <option value="Minuman Dingin">Minuman Dingin</option>
-                                        </select>
-                                        @error('kategori')
-                                            <div class="invalid-feedback">
-                                                <i class="fas fa-exclamation-circle me-1"></i>{{ $message }}
-                                            </div>
-                                        @enderror
+                            <!-- Kategori -->
+                            <div class="mb-4">
+                                <label for="kategori" class="form-label fw-medium">
+                                    <i class="fas fa-list me-2"></i>Kategori
+                                </label>
+                                <select name="kategori" id="kategori" class="form-control">
+                                    <option value="">Pilih Kategori</option>
+                                    <option value="Makanan Berat">Makanan Berat</option>
+                                    <option value="Makanan Ringan">Makanan Ringan</option>
+                                    <option value="Minuman Panas">Minuman Panas</option>
+                                    <option value="Minuman Dingin">Minuman Dingin</option>
+                                </select>
+                                @error('kategori')
+                                    <div class="invalid-feedback">
+                                        <i class="fas fa-exclamation-circle me-1"></i>{{ $message }}
                                     </div>
+                                @enderror
+                            </div>
 
-                                    <!-- Deskripsi -->
-                                    <div class="mb-4">
-                                        <label for="deskripsi" class="form-label fw-medium">
-                                            <i class="fas fa-align-left me-2"></i>Deskripsi
-                                        </label>
-                                        <textarea id="deskripsi" name="deskripsi" class="form-control @error('deskripsi') is-invalid @enderror" rows="4"
-                                            placeholder="Masukkan deskripsi menu">{{ old('deskripsi') }}</textarea>
-                                        @error('deskripsi')
-                                            <div class="invalid-feedback">
-                                                <i class="fas fa-exclamation-circle me-1"></i>{{ $message }}
-                                            </div>
-                                        @enderror
+                            <!-- Deskripsi -->
+                            <div class="mb-4">
+                                <label for="deskripsi" class="form-label fw-medium">
+                                    <i class="fas fa-align-left me-2"></i>Deskripsi
+                                </label>
+                                <textarea id="deskripsi" name="deskripsi" class="form-control @error('deskripsi') is-invalid @enderror" rows="4"
+                                    placeholder="Masukkan deskripsi menu">{{ old('deskripsi') }}</textarea>
+                                @error('deskripsi')
+                                    <div class="invalid-feedback">
+                                        <i class="fas fa-exclamation-circle me-1"></i>{{ $message }}
                                     </div>
+                                @enderror
+                            </div>
 
-                                    <!-- Gambar -->
-                                    <div class="mb-4">
-                                        <label for="gambar" class="form-label fw-medium">
-                                            <i class="fas fa-image me-2"></i>Gambar Menu
-                                        </label>
-                                        <input type="file" id="gambar" name="gambar"
-                                            class="form-control @error('gambar') is-invalid @enderror" accept="image/*"
-                                            required>
-                                        <div class="form-text">
-                                            <i class="fas fa-info-circle me-1"></i>
-                                            Format yang didukung: JPG, PNG, GIF. Maksimal 2MB.
-                                        </div>
-                                        @error('gambar')
-                                            <div class="invalid-feedback">
-                                                <i class="fas fa-exclamation-circle me-1"></i>{{ $message }}
-                                            </div>
-                                        @enderror
+                            <!-- Gambar -->
+                            <div class="mb-4">
+                                <label for="gambar" class="form-label fw-medium">
+                                    <i class="fas fa-image me-2"></i>Gambar Menu
+                                </label>
+                                <input type="file" id="gambar" name="gambar"
+                                    class="form-control @error('gambar') is-invalid @enderror" accept="image/*" required>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Format yang didukung: JPG, PNG, GIF. Maksimal 2MB.
+                                </div>
+                                @error('gambar')
+                                    <div class="invalid-feedback">
+                                        <i class="fas fa-exclamation-circle me-1"></i>{{ $message }}
                                     </div>
+                                @enderror
+                            </div>
 
-                                    <!-- Preview Gambar -->
-                                    <div class="mb-4" id="imagePreview" style="display: none;">
-                                        <label class="form-label fw-medium">
-                                            <i class="fas fa-eye me-2"></i>Preview Gambar
-                                        </label>
-                                        <div class="text-center">
-                                            <img id="preview" src="" alt="Preview" class="img-fluid rounded"
-                                                style="max-height: 200px;">
-                                        </div>
-                                    </div>
+                            <!-- Preview Gambar -->
+                            <div class="mb-4" id="imagePreview" style="display: none;">
+                                <label class="form-label fw-medium">
+                                    <i class="fas fa-eye me-2"></i>Preview Gambar
+                                </label>
+                                <div class="text-center">
+                                    <img id="preview" src="" alt="Preview" class="img-fluid rounded"
+                                        style="max-height: 200px;">
+                                </div>
+                            </div>
 
-                                    <!-- Action Buttons -->
-                                    <div class="d-flex gap-2 justify-content-end">
-                                        <a href="{{ route('admin.menus.index') }}" class="btn btn-outline-secondary">
-                                            <i class="fas fa-times me-2"></i>Batal
-                                        </a>
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="fas fa-save me-2"></i>Simpan Menu
-                                        </button>
-                                    </div>
+                            <!-- Action Buttons -->
+                            <div class="d-flex gap-2 justify-content-end">
+                                <a href="{{ route('admin.menus.index') }}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-times me-2"></i>Batal
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i>Simpan Menu
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </div>

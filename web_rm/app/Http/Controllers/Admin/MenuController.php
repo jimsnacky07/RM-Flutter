@@ -33,7 +33,14 @@ class MenuController extends Controller
 
         $path = null;
         if ($request->hasFile('gambar')) {
-            $path = $request->file('gambar')->store('menus', 'public');
+            $file = $request->file('gambar');
+            $originalName = $file->getClientOriginalName();
+            $destination = public_path('images/menus');
+            if (!file_exists($destination)) {
+                mkdir($destination, 0777, true);
+            }
+            $file->move($destination, $originalName);
+            $path = $originalName;
         }
 
         Menu::create([
@@ -69,9 +76,19 @@ class MenuController extends Controller
 
         if ($request->hasFile('gambar')) {
             if ($menu->gambar) {
-                Storage::disk('public')->delete($menu->gambar);
+                $oldPath = public_path($menu->gambar);
+                if (file_exists($oldPath)) {
+                    unlink($oldPath);
+                }
             }
-            $menu->gambar = $request->file('gambar')->store('menus', 'public');
+            $file = $request->file('gambar');
+            $originalName = $file->getClientOriginalName();
+            $destination = public_path('images/menus');
+            if (!file_exists($destination)) {
+                mkdir($destination, 0777, true);
+            }
+            $file->move($destination, $originalName);
+            $menu->gambar = $originalName;
         }
 
         $menu->update([
@@ -95,5 +112,20 @@ class MenuController extends Controller
         $menu->delete();
 
         return redirect()->route('admin.menus.index')->with('success', 'Menu berhasil dihapus.');
+    }
+
+    public function generateQRCode()
+    {
+        $menus = Menu::all();
+
+        foreach ($menus as $menu) {
+            // Generate barcode value berdasarkan menu ID
+            $barcodeValue = 'MENU' . str_pad($menu->id, 6, '0', STR_PAD_LEFT);
+            $menu->barcode = $barcodeValue;
+            $menu->save();
+        }
+
+        // Return view partial untuk modal
+        return view('admin.menus.qr_modal', compact('menus'))->render();
     }
 }

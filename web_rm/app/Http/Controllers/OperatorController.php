@@ -27,7 +27,7 @@ class OperatorController extends Controller
         $totalPesanan = Pesanan::count();
         $menuTerbaru = Menu::orderBy('created_at', 'desc')->first();
 
-        $pesananHariIni = Pesanan::whereDate('created_at', today())->count();
+        $nomeja = Pesanan::orderBy('order_id', 'desc')->pluck('order_id')->first();
         $pesananMenunggu = Pesanan::where('status', 'pending')->count();
 
         $pendapatanHariIni = Pesanan::whereDate('created_at', today())->sum('total_harga');
@@ -42,7 +42,7 @@ class OperatorController extends Controller
             'totalMenu',
             'totalPesanan',
             'menuTerbaru',
-            'pesananHariIni',
+            'nomeja',
             'pesananMenunggu',
             'pendapatanHariIni',
             'pesananTerbaru'
