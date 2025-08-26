@@ -58,7 +58,7 @@ CREATE TABLE `detail_pesanans` (
   PRIMARY KEY (`id`),
   KEY `detail_pesanans_pesanan_id_foreign` (`pesanan_id`),
   KEY `detail_pesanans_menu_id_foreign` (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=358 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=375 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `detail_pesanans` */
 
@@ -132,7 +132,24 @@ insert  into `detail_pesanans`(`id`,`pesanan_id`,`menu_id`,`jumlah`,`harga`,`sub
 (354,225,4,1,30000,30000.00,'2025-08-26 10:30:47','2025-08-26 10:30:47'),
 (355,225,5,1,25000,25000.00,'2025-08-26 10:30:47','2025-08-26 10:30:47'),
 (356,225,6,1,10000,10000.00,'2025-08-26 10:30:47','2025-08-26 10:30:47'),
-(357,225,8,1,18000,18000.00,'2025-08-26 10:30:47','2025-08-26 10:30:47');
+(357,225,8,1,18000,18000.00,'2025-08-26 10:30:47','2025-08-26 10:30:47'),
+(358,226,1,1,28000,28000.00,'2025-08-26 10:37:56','2025-08-26 10:37:56'),
+(359,226,4,1,30000,30000.00,'2025-08-26 10:37:56','2025-08-26 10:37:56'),
+(360,226,6,1,10000,10000.00,'2025-08-26 10:37:56','2025-08-26 10:37:56'),
+(361,226,5,1,25000,25000.00,'2025-08-26 10:37:56','2025-08-26 10:37:56'),
+(362,228,4,2,30000,60000.00,'2025-08-26 21:36:31','2025-08-26 21:36:31'),
+(363,228,10,2,15000,30000.00,'2025-08-26 21:36:31','2025-08-26 21:36:31'),
+(364,229,4,1,30000,30000.00,'2025-08-26 21:37:09','2025-08-26 21:37:09'),
+(365,229,3,1,25000,25000.00,'2025-08-26 21:37:09','2025-08-26 21:37:09'),
+(366,229,2,1,30000,30000.00,'2025-08-26 21:37:09','2025-08-26 21:37:09'),
+(367,230,6,3,10000,30000.00,'2025-08-26 21:38:03','2025-08-26 21:38:03'),
+(368,231,11,4,13000,52000.00,'2025-08-26 21:40:26','2025-08-26 21:40:26'),
+(369,232,11,6,13000,78000.00,'2025-08-26 21:41:00','2025-08-26 21:41:00'),
+(370,233,1,1,28000,28000.00,'2025-08-26 22:01:36','2025-08-26 22:01:36'),
+(371,233,4,1,30000,30000.00,'2025-08-26 22:01:36','2025-08-26 22:01:36'),
+(372,233,6,1,10000,10000.00,'2025-08-26 22:01:36','2025-08-26 22:01:36'),
+(373,233,8,1,18000,18000.00,'2025-08-26 22:01:36','2025-08-26 22:01:36'),
+(374,234,4,1,30000,30000.00,'2025-08-26 22:47:29','2025-08-26 22:47:29');
 
 /*Table structure for table `failed_jobs` */
 
@@ -207,24 +224,26 @@ CREATE TABLE `menus` (
   `barcode` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `menus_barcode_unique` (`barcode`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `menus` */
 
 insert  into `menus`(`id`,`nama`,`deskripsi`,`harga`,`gambar`,`kategori`,`stok`,`created_at`,`updated_at`,`barcode`) values 
-(1,'Rendang','Rendang khas Padang',28000,'rendang.png','Makanan Berat',87,'2025-08-18 07:14:45','2025-08-18 07:14:45','135861'),
-(2,'Gulai Tunjang','Gulai tunjang pedas nikmat',30000,'gulai_tunjang.png','Makanan Berat',94,'2025-08-18 07:14:45','2025-08-18 07:14:45','254242'),
-(3,'Ayam Goreng','Ayam goreng renyah',25000,'ayam_goreng.png','Makanan Berat',94,'2025-08-18 07:14:45','2025-08-18 07:14:45','363630'),
-(4,'Dendeng Balado','Dendeng balado yang pedas dan lezat',30000,'dendeng_balado.png','Makanan Berat',90,'2025-08-18 07:14:45','2025-08-18 07:14:45','455422'),
-(5,'Gulai Tambusu','Gulai Tambusu yang lezat dan nikmat',25000,'gulai_tambusu.png','Makanan Berat',96,'2025-08-18 07:14:45','2025-08-18 07:14:45','586222'),
-(6,'Ikan Bakar','Ikan Bakar dengan bumbu khas minang',10000,'ikan_bakar.png','Makanan Berat',92,'2025-08-18 07:14:45','2025-08-18 07:14:45','664842'),
-(7,'Telur Barendo','Telur Barendo nan lamak',15000,'telur_barendo.png','Makanan Berat',97,'2025-08-18 07:14:45','2025-08-18 07:14:45','765546'),
-(8,'Kalio Jariang','Kalio jariang dengan kuah yang menggugah selera',18000,'kalio_jariang.png','Makanan Berat',96,'2025-08-18 07:14:45','2025-08-18 07:14:45','833204'),
-(9,'Udang Balado','Udang balado gurih dan pedas',15000,'udang_balado.png','Makanan Berat',97,'2025-08-18 07:14:45','2025-08-18 07:14:45','969384'),
-(10,'Jangek Siram','kerupuk kulit yang disiram dengan kuah',15000,'jangek_siram.png','Makanan Ringan',87,'2025-08-18 07:14:45','2025-08-18 07:14:45','1047306'),
-(11,'Telur Bulat Balado','sambel khas minang',13000,'telur_bulat_balado.png','Makanan Berat',100,'2025-08-18 07:14:45','2025-08-18 07:14:45','1128379'),
-(12,'Test Menu','Menu untuk testing',25000,NULL,'Makanan Berat',97,'2025-08-24 16:30:43','2025-08-24 16:30:43','123456'),
-(13,'Flow Test Menu','Menu untuk testing flow pembayaran',50000,NULL,'Makanan Berat',100,'2025-08-24 16:30:58','2025-08-24 16:30:58','FLOW123');
+(1,'Rendang','Rendang khas Padang',28000,'rendang.png','Makanan Berat',85,'2025-08-18 07:14:45','2025-08-26 11:32:46','MENU000001'),
+(2,'Gulai Tunjang','Gulai tunjang pedas nikmat',30000,'gulai_tunjang.png','Makanan Berat',93,'2025-08-18 07:14:45','2025-08-26 11:32:46','MENU000002'),
+(3,'Ayam Goreng','Ayam goreng renyah',25000,'ayam_goreng.png','Makanan Berat',93,'2025-08-18 07:14:45','2025-08-26 11:32:46','MENU000003'),
+(4,'Dendeng Balado','Dendeng balado yang pedas dan lezat',30000,'dendeng_balado.png','Makanan Berat',84,'2025-08-18 07:14:45','2025-08-26 11:32:46','MENU000004'),
+(5,'Gulai Tambusu','Gulai Tambusu yang lezat dan nikmat',25000,'gulai_tambusu.png','Makanan Berat',95,'2025-08-18 07:14:45','2025-08-26 11:32:46','MENU000005'),
+(6,'Ikan Bakar','Ikan Bakar dengan bumbu khas minang',10000,'ikan_bakar.png','Makanan Berat',87,'2025-08-18 07:14:45','2025-08-26 11:32:46','MENU000006'),
+(7,'Telur Barendo','Telur Barendo nan lamak',15000,'telur_barendo.png','Makanan Berat',97,'2025-08-18 07:14:45','2025-08-26 11:32:46','MENU000007'),
+(8,'Kalio Jariang','Kalio jariang dengan kuah yang menggugah selera',18000,'kalio_jariang.png','Makanan Berat',95,'2025-08-18 07:14:45','2025-08-26 11:32:46','MENU000008'),
+(9,'Udang Balado','Udang balado gurih dan pedas',15000,'udang_balado.png','Makanan Berat',97,'2025-08-18 07:14:45','2025-08-26 11:32:46','MENU000009'),
+(10,'Jangek Siram','kerupuk kulit yang disiram dengan kuah',15000,'jangek_siram.png','Makanan Ringan',85,'2025-08-18 07:14:45','2025-08-26 11:32:46','MENU000010'),
+(11,'Telur Bulat Balado','sambel khas minang',13000,'telur_bulat_balado.png','Makanan Berat',90,'2025-08-18 07:14:45','2025-08-26 11:32:46','MENU000011'),
+(16,'Jus Alpukat','Jus Alpukat Dengan Susu Coklat',10000,'jus_alpukat.png','Minuman Dingin',100,'2025-08-26 23:13:04','2025-08-26 23:20:08',NULL),
+(17,'Teh Es','Teh Es Dingin Manis, Cocok Untuk Makan Dengan Nasi Padang',5000,'teh_es.png','Minuman Dingin',100,'2025-08-26 23:21:45','2025-08-26 23:26:09',NULL),
+(18,'Kopi Hitam','Kopi Hitam Mantap Menemani Waktu Malam',5000,'kopi_hitam.png','Minuman Panas',1000,'2025-08-26 23:27:46','2025-08-26 23:27:46',NULL),
+(19,'Karupuak Jariang Balado','Kerupuk Jengkol Balado Nikmat dimakan dengan Nasi Padang',2000,'karupuak_jariang_balado.png','Makanan Ringan',1000,'2025-08-26 23:31:48','2025-08-26 23:31:48',NULL);
 
 /*Table structure for table `migrations` */
 
@@ -273,12 +292,13 @@ CREATE TABLE `orders` (
   UNIQUE KEY `orders_order_id_unique` (`order_id`),
   KEY `orders_user_id_foreign` (`user_id`),
   CONSTRAINT `orders_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `orders` */
 
 insert  into `orders`(`id`,`user_id`,`order_id`,`total_harga`,`status`,`metode_pembayaran`,`catatan`,`items`,`snap_token`,`created_at`,`updated_at`) values 
-(87,31,'68ad8cd779d51',111000.00,'paid','gopay',NULL,NULL,NULL,'2025-08-26 10:30:47','2025-08-26 10:31:01');
+(87,31,'68ad8cd779d51',111000.00,'paid','gopay',NULL,NULL,NULL,'2025-08-26 10:30:47','2025-08-26 10:31:01'),
+(88,31,'68ad8e8425bc0',93000.00,'paid','gopay',NULL,NULL,NULL,'2025-08-26 10:37:56','2025-08-26 10:38:05');
 
 /*Table structure for table `pembayarans` */
 
@@ -315,7 +335,7 @@ CREATE TABLE `personal_access_tokens` (
   UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
   KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`),
   KEY `personal_access_tokens_expires_at_index` (`expires_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=197 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=198 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `personal_access_tokens` */
 
@@ -509,7 +529,7 @@ insert  into `personal_access_tokens`(`id`,`tokenable_type`,`tokenable_id`,`name
 (188,'App\\Models\\User',31,'auth_token','227e2a718c4e814e058f94811d105ac1638022d9cea1dee3a85e4a9342c7b541','[\"*\"]',NULL,NULL,'2025-08-25 18:50:13','2025-08-25 18:50:13'),
 (189,'App\\Models\\User',31,'auth_token','b0de519f66826dfd522baf894f4ecd6cd73356f1ae7c2110535fbc427bba0451','[\"*\"]',NULL,NULL,'2025-08-25 18:50:27','2025-08-25 18:50:27'),
 (193,'App\\Models\\User',31,'API Token','41c6090ffc8d17ecaa57602a01d69e2f980b0aab7ab2ee5ebb06f3f73a2e7937','[\"*\"]','2025-08-26 00:02:44',NULL,'2025-08-25 19:23:50','2025-08-26 00:02:44'),
-(196,'App\\Models\\User',31,'API Token','84ed0ca34745797e9f547a786f4855ba895f0507e95665f674c48f77347f37c7','[\"*\"]','2025-08-26 10:30:47',NULL,'2025-08-26 07:44:07','2025-08-26 10:30:47');
+(197,'App\\Models\\User',31,'API Token','41da8d9c84c63fd494896867a725bd266653d41d69c27d6f792f738001e6602d','[\"*\"]','2025-08-26 10:38:14',NULL,'2025-08-26 10:37:44','2025-08-26 10:38:14');
 
 /*Table structure for table `pesanans` */
 
@@ -529,12 +549,20 @@ CREATE TABLE `pesanans` (
   PRIMARY KEY (`id`),
   KEY `pesanans_user_id_foreign` (`user_id`),
   CONSTRAINT `pesanans_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=226 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=235 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `pesanans` */
 
 insert  into `pesanans`(`id`,`order_id`,`user_id`,`nama_pelanggan`,`status`,`metode`,`total_harga`,`created_at`,`updated_at`,`detail`) values 
-(225,'68ad8cd779d51',31,'Anton Sabu','Diproses','E-wallet',111000.00,'2025-08-26 10:30:47','2025-08-26 10:31:01',NULL);
+(225,'68ad8cd779d51',31,'Anton Sabu','Dikirim','E-wallet',111000.00,'2025-08-26 10:30:47','2025-08-26 22:21:37',NULL),
+(226,'68ad8e8425bc0',31,'Anton Sabu','Diproses','E-wallet',93000.00,'2025-08-26 10:37:56','2025-08-26 10:38:05',NULL),
+(228,'12',3,NULL,'Diproses','Cash',90000.00,'2025-08-26 21:36:31','2025-08-26 21:36:31',NULL),
+(229,'13',3,NULL,'Diproses','Cash',85000.00,'2025-08-26 21:37:09','2025-08-26 21:37:09',NULL),
+(230,'14',3,NULL,'Diproses','Transfer',30000.00,'2025-08-26 21:38:03','2025-08-26 21:38:03',NULL),
+(231,'14',3,NULL,'Diproses','E-Wallet',52000.00,'2025-08-26 21:40:26','2025-08-26 21:40:26',NULL),
+(232,'15',3,NULL,'Selesai','Cash',78000.00,'2025-08-26 21:41:00','2025-08-26 23:34:00',NULL),
+(233,'14',3,NULL,'Selesai','E-Wallet',86000.00,'2025-08-26 22:01:36','2025-08-26 22:18:57',NULL),
+(234,'2',3,NULL,'Selesai','Cash',30000.00,'2025-08-26 22:47:29','2025-08-26 22:50:53',NULL);
 
 /*Table structure for table `sessions` */
 
@@ -555,7 +583,9 @@ CREATE TABLE `sessions` (
 /*Data for the table `sessions` */
 
 insert  into `sessions`(`id`,`user_id`,`ip_address`,`user_agent`,`payload`,`last_activity`) values 
-('pQfwm3Xx3lmZ7rUIFlFIYYp5od22Wz19maxKao7d',30,'127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36','YTo0OntzOjY6Il90b2tlbiI7czo0MDoiYlpwN2NMcjMycFM3ZVRVRkp6VHNsNWpFNWkxSWFzZ3pmblZUR2tyeiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9tZW51cyI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjMwO30=',1756173307);
+('3LOpoDuvsUcPcuvlwf2qVF7SrbTEYabdBpIRrqNY',NULL,'192.168.100.19','Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Mobile Safari/537.36','YTozOntzOjY6Il90b2tlbiI7czo0MDoidW5TUnpodXV2ZjlhejdXcEhFYWxtMk1aOE9Ob2EzaE5vWFBJMVVMViI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzY6Imh0dHA6Ly8xOTIuMTY4LjEwMC40ODo4MDAwL3BlbWVzYW5hbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=',1756245696),
+('jNS3nAcg5FVzAaY2tnsI2a3MaWLCUlIuBSibNVFG',32,'192.168.100.48','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36','YTo0OntzOjY6Il90b2tlbiI7czo0MDoiQnV1WGtZNHEwWGgxNmdFV1h5R01BbUlZMFNGWlJ6bG1TVEQyQWg3TyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDM6Imh0dHA6Ly8xOTIuMTY4LjEwMC40ODo4MDAwL29wZXJhdG9yL3Blc2FuYW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTozMjt9',1756251563),
+('nQIPdvjr1U2BIDAQWZbp9y6j6d1LBWVTSw1PAkn5',32,'127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36','YTo0OntzOjY6Il90b2tlbiI7czo0MDoiS2R3cElWZ3pteDQxZDhuU0N3NWJDSXdtaG8zNlZwdENBeUpuaG5aSCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDA6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9vcGVyYXRvci9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTozMjt9',1756248323);
 
 /*Table structure for table `transaksi` */
 
@@ -591,7 +621,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_username_unique` (`username`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `users` */
 
@@ -616,7 +646,6 @@ insert  into `users`(`id`,`nama`,`username`,`email`,`password`,`level`,`remember
 (18,'Pelanggan 16','pelanggan16','pelanggan16@example.com','$2y$12$oOovknxebjdEmlsY9zJzb.hcoyJA44U0vhtdqhQLLN/MRwTQbBeTC','pelanggan',NULL,'2025-08-18 06:54:50','2025-08-18 06:54:50'),
 (19,'Pelanggan 17','pelanggan17','pelanggan17@example.com','$2y$12$HkoYmH1lzkZzm1ocDr2M4OCLkn6JJ/.s1KdurH.JwSOlAkAL34cr6','pelanggan',NULL,'2025-08-18 06:54:50','2025-08-18 06:54:50'),
 (20,'Pelanggan 18','pelanggan18','pelanggan18@example.com','$2y$12$TjW.//Pr9QlG6Ezk/7zese7JFTmvPZAxcYijH/zO8ivY1R2yGIWhm','pelanggan',NULL,'2025-08-18 06:54:51','2025-08-18 06:54:51'),
-(21,'Pelanggan 19','pelanggan19','pelanggan19@example.com','$2y$12$3dwopHISxn9NuqEKyqTF4uC6rla/I7L5M/27fwCOtTBFvxv9v.KmO','pelanggan',NULL,'2025-08-18 06:54:51','2025-08-18 06:54:51'),
 (24,'dian','diputdi','dian@gmail.com','$2y$12$TmK08ScY2boZj57T6Phcb.9IWNX9K82zC4beRioHMuwJnlC5MpBce','pelanggan',NULL,'2025-08-20 01:37:24','2025-08-20 01:37:24'),
 (25,'John Doe','john123','johndoe@example.com','$2y$12$9.tHL5D..BnVoRFuo5hx5uBHuKOx3oCLVAc8X.WlpO0M74aNjzOC.','pelanggan',NULL,'2025-08-20 01:37:40','2025-08-20 01:37:40'),
 (26,'lala','lala123','lala@example.com','$2y$12$oktjpzh/Z5k4GsbA3feXhO//FSBdsw6yaHu7gSx7m6apg2XmvkGW.','pelanggan',NULL,'2025-08-20 02:08:42','2025-08-20 02:08:42'),
@@ -624,7 +653,8 @@ insert  into `users`(`id`,`nama`,`username`,`email`,`password`,`level`,`remember
 (28,'Test User','testuser','test@example.com','$2y$12$mnZKjv/RUD489N8hz8MnSeYILBrCuw/9sq4da0cxoZVV4jzQ5hWdC','pelanggan',NULL,'2025-08-24 16:30:42','2025-08-24 16:30:42'),
 (30,'Yudha Bima Sakti','yudha','yudhabimasakti787@gmail.com','$2y$12$M4FFAw24ho917Gco0aueY.3siO29fMqaQmXugAoHzZ9N2F1481JBO','admin',NULL,'2025-08-24 17:03:04','2025-08-24 17:03:04'),
 (31,'Anton Sabu','anton','anton@gmail.com','$2y$12$qzAO/rEbkcL7uUgWi5wCmOyd1l2FvCP5/ksQVgWM3FXiF8PRy0mAm','pelanggan',NULL,'2025-08-24 17:17:23','2025-08-24 17:20:20'),
-(32,'Operator 2','operator1','op@gmail.com','$2y$12$S77pcp9LhZdgtt4JSig5eOtJ8kiOXI/zPe/d6YY2FJ1zCI21y6q6O','operator',NULL,'2025-08-24 18:39:21','2025-08-24 18:40:58');
+(32,'OPERATOR','operator1','op@gmail.com','$2y$12$S77pcp9LhZdgtt4JSig5eOtJ8kiOXI/zPe/d6YY2FJ1zCI21y6q6O','operator',NULL,'2025-08-24 18:39:21','2025-08-26 22:56:41'),
+(33,'Pelanggan Ditempat','pelanggan-rm','pelanggan@rm.com','$2y$12$PoILRSRHD6YWCdsnkg1jkeSwrbx9PUC3QIdoscBMT88WJ/11098E2','pelanngan',NULL,'2025-08-26 23:08:28','2025-08-26 23:08:28');
 
 /* Trigger structure for table `detail_pesanans` */
 
