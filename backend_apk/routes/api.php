@@ -2,11 +2,11 @@
 
 use App\Http\Controllers\Api\ApiAuthController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\MenuController as MenuController;
 use App\Http\Controllers\Api\PesananController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\MidtransCallbackController;
+use App\Http\Controllers\Api\PaymentStatusController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,3 +64,8 @@ Route::fallback(function () {
         'message' => 'Route API tidak ditemukan.'
     ], 404);
 });
+
+// Check payment status
+Route::get('payments/status/{orderId}', [PaymentStatusController::class, 'check'])
+    ->name('payments.status')
+    ->withoutMiddleware(['auth:sanctum']); // Bisa diakses tanpa autentikasi

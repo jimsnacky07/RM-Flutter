@@ -14,11 +14,10 @@ class MidtransCallbackController extends Controller
     public function notification(Request $request)
     {
         try {
-            // Set Midtrans configuration
+            // Konfigurasi Midtrans
             \Midtrans\Config::$serverKey = config('services.midtrans.serverKey');
             \Midtrans\Config::$isProduction = config('services.midtrans.isProduction');
 
-            Log::debug('Webhook raw payload', ['body' => $request->getContent()]);
             $notification = new Notification();
 
             $orderId = $notification->order_id;
@@ -26,59 +25,50 @@ class MidtransCallbackController extends Controller
             $fraudStatus = $notification->fraud_status;
             $paymentType = $notification->payment_type;
 
-            Log::debug('Webhook order_id', ['order_id' => $orderId]);
-            Log::info('Midtrans notification received', [
-                'order_id' => $orderId,
-                'transaction_status' => $transactionStatus,
-                'fraud_status' => $fraudStatus,
-                'metode_pembayaran' => $paymentType
-            ]);
-
             $order = Order::where('order_id', $orderId)->first();
             $pesan = Pesanan::where('order_id', $orderId)->first();
-            Log::debug('Pesanan ditemukan?', ['found' => $order ? 'ya' : 'tidak']);
-            if (!$order) {
+
+            if (!$order || !$pesan) {
                 Log::error("Pesanan tidak ditemukan: $orderId");
                 return response()->json(['message' => 'Pesanan tidak ditemukan'], 404);
             }
 
-            $statusPesanan = 'Menunggu Pembayaran';
+            // Tentukan status baru untuk orders
+            $statusOrder = match ($transactionStatus) {
+                'capture' => $fraudStatus == 'accept' ? 'paid' : 'Menunggu Konfirmasi',
+                'settlement' => 'paid',
+                'pending' => 'pending',
+                'deny', 'expire', 'cancel' => 'failed',
+                default => 'Menunggu Pembayaran',
+            };
 
-            switch ($transactionStatus) {
-                case 'capture':
-                    if ($fraudStatus == 'challenge') {
-                        $statusPesanan = 'Menunggu Konfirmasi';
-                    } else if ($fraudStatus == 'accept') {
-                        $statusPesanan = 'paid';
-                    }
-                    break;
-                case 'settlement':
-                    $statusPesanan = 'paid';
-                    break;
-                case 'pending':
-                    $statusPesanan = 'pending';
-                    break;
-                case 'deny':
-                case 'expire':
-                case 'cancel':
-                    $statusPesanan = 'Failed';
-                    break;
-                default:
-                    $statusPesanan = 'Waiting Payment';
-                    break;
-            }
-
-            Log::debug('Update pesanan', [
-                'order_id' => $orderId,
-                'status_baru' => $statusPesanan,
-                'metode_pembayaran' => $paymentType
-            ]);
-            $pesan->status = $statusPesanan;
-            $order->status = $statusPesanan;
+            // Update orders
+            $order->status = $statusOrder;
             $order->metode_pembayaran = $paymentType;
             $order->save();
 
-            Log::info("Status pesanan $orderId diperbarui ke: $statusPesanan");
+            // Tentukan status dan metode untuk pesanans
+            if ($statusOrder === 'paid') {
+                $pesan->status = 'Diproses';
+            } elseif ($statusOrder === 'pending') {
+                $pesan->status = 'Menunggu Pembayaran';
+            } elseif ($statusOrder === 'failed') {
+                $pesan->status = 'Gagal';
+            } else {
+                $pesan->status = $statusOrder;
+            }
+
+            // Tentukan metode pembayaran untuk tabel pesanans
+            $pesan->metode = match ($paymentType) {
+                'bank_transfer' => 'Virtual Account Bank ' . ($notification->va_numbers[0]->bank ?? ''),
+                'gopay', 'qris', 'shopeepay' => 'E-wallet',
+                default => 'Lainnya',
+            };
+
+            $pesan->save();
+
+            Log::info("Status pesanan $orderId diperbarui - orders: $statusOrder, pesanans: {$pesan->status}, metode: {$pesan->metode}");
+
             return response()->json(['message' => 'Notification handled successfully']);
         } catch (\Exception $e) {
             Log::error('Error handling notification: ' . $e->getMessage());

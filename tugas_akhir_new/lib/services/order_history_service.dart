@@ -33,7 +33,7 @@ class OrderHistoryService {
     final token = await storage.read(key: 'token');
 
     final response = await http.get(
-      Uri.parse('$baseUrl/pesanan/$orderId'),
+      Uri.parse('$baseUrl/payments/status/$orderId'),
       headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',

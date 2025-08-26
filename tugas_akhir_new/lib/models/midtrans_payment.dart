@@ -2,19 +2,38 @@ class MidtransPayment {
   final String orderId;
   final String transactionId;
   final String paymentType;
-  final String status;
+  final String transactionStatus;
   final Map<String, dynamic> paymentData;
+  final String grossAmount;
+  final String transactionTime;
+  final String statusCode;
+  final String fraudStatus;
 
   MidtransPayment({
     required this.orderId,
     required this.transactionId,
     required this.paymentType,
-    required this.status,
+    required String status,
     required this.paymentData,
-  });
+    this.grossAmount = '0',
+    this.transactionTime = '',
+    this.statusCode = '',
+    this.fraudStatus = '',
+  }) : transactionStatus = status;
+
+  // Status getter
+  bool get isSuccess =>
+      transactionStatus.toLowerCase() == 'settlement' ||
+      transactionStatus.toLowerCase() == 'paid';
+
+  bool get isPending => transactionStatus.toLowerCase() == 'pending';
+
+  bool get isFailed =>
+      transactionStatus.toLowerCase() == 'deny' ||
+      transactionStatus.toLowerCase() == 'cancel' ||
+      transactionStatus.toLowerCase() == 'expire';
 
   factory MidtransPayment.fromJson(Map<String, dynamic> json) {
-    // Extract payment specific data
     Map<String, dynamic> paymentData = {};
 
     switch (json['payment_type']) {
@@ -47,29 +66,10 @@ class MidtransPayment {
       paymentType: json['payment_type'] ?? '',
       status: json['transaction_status'] ?? 'pending',
       paymentData: paymentData,
-    );
-  }
-}
-
-class PaymentInstructions {
-  final String bank;
-  final String vaNumber;
-  final String? qrCodeUrl;
-  final List<String> instructions;
-
-  PaymentInstructions({
-    required this.bank,
-    required this.vaNumber,
-    this.qrCodeUrl,
-    required this.instructions,
-  });
-
-  factory PaymentInstructions.fromJson(Map<String, dynamic> json) {
-    return PaymentInstructions(
-      bank: json['bank'] ?? '',
-      vaNumber: json['va_number'] ?? '',
-      qrCodeUrl: json['qr_code_url'],
-      instructions: List<String>.from(json['instructions'] ?? []),
+      grossAmount: json['gross_amount']?.toString() ?? '0',
+      transactionTime: json['transaction_time'] ?? '',
+      statusCode: json['status_code']?.toString() ?? '',
+      fraudStatus: json['fraud_status'] ?? '',
     );
   }
 }

@@ -1,67 +1,47 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/midtrans_payment.dart';
 
 class PaymentService {
-  final String baseUrl = 'http://192.168.100.48:8000/api';
+  final String baseUrl;
 
-  Future<String> createPayment({
-    required String orderId,
-    required double amount,
-    required String customerName,
-    required String customerEmail,
-    required String customerPhone,
-    required List<Map<String, dynamic>> items,
-  }) async {
-    try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/payment/process'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: jsonEncode({
-          'transaction_details': {
-            'order_id': orderId,
-            'gross_amount': amount,
-          },
-          'customer_details': {
-            'first_name': customerName,
-            'email': customerEmail,
-            'phone': customerPhone,
-          },
-          'item_details': items,
-        }),
-      );
+  PaymentService({required this.baseUrl});
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        return data['snap_token'];
-      } else {
-        throw Exception('Failed to create payment');
-      }
-    } catch (e) {
-      throw Exception('Error creating payment: $e');
+  Future<MidtransPayment> checkPaymentStatus(String orderId) async {
+    final url = Uri.parse('$baseUrl/api/payments/status/$orderId');
+    final response = await http.get(url);
+    print('status code: ${response.statusCode}');
+    print('body: ${response.body}');
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return MidtransPayment.fromJson(data);
+    } else {
+      throw Exception('Failed to fetch payment status: ${response.statusCode}');
     }
   }
 
-  Future<MidtransPayment> checkPaymentStatus(String orderId) async {
-    try {
-      final response = await http.get(
-        Uri.parse('$baseUrl/payment/status/$orderId'),
-        headers: {
-          'Accept': 'application/json',
-        },
-      );
+  Stream<MidtransPayment> watchPaymentStatus(String orderId,
+      {Duration interval = const Duration(seconds: 5)}) async* {
+    while (true) {
+      try {
+        final payment = await checkPaymentStatus(orderId);
+        yield payment;
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        return MidtransPayment.fromJson(data);
-      } else {
-        throw Exception('Failed to check payment status');
+        // Stop polling if payment is success or failed
+        if (payment.isSuccess || payment.isFailed) break;
+      } catch (e) {
+        yield MidtransPayment(
+          orderId: orderId,
+          transactionId: '',
+          paymentType: '',
+          status: 'failed',
+          paymentData: {},
+        );
+        break;
       }
-    } catch (e) {
-      throw Exception('Error checking payment status: $e');
+      await Future.delayed(interval);
     }
   }
 }

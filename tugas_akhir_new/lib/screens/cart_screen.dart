@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
 import '../services/order_service.dart';
+import '../services/payment_service.dart';
 import '../screens/payment_screen.dart';
+import '../widgets/payment_status_widget.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -24,9 +26,7 @@ class _CartScreenState extends State<CartScreen> {
       body: Consumer<CartProvider>(
         builder: (context, cart, child) {
           if (cart.cartItems.isEmpty) {
-            return const Center(
-              child: Text('Keranjang kosong'),
-            );
+            return const Center(child: Text('Keranjang kosong'));
           }
 
           return Column(
@@ -38,14 +38,11 @@ class _CartScreenState extends State<CartScreen> {
                     final item = cart.cartItems.values.elementAt(index);
                     return Card(
                       margin: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
+                          horizontal: 16, vertical: 8),
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8),
                         child: Row(
                           children: [
-                            // Menu image
                             ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: Image.asset(
@@ -64,18 +61,14 @@ class _CartScreenState extends State<CartScreen> {
                               ),
                             ),
                             const SizedBox(width: 16),
-                            // Menu info
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    item.name,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                                  Text(item.name,
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold)),
                                   const SizedBox(height: 4),
                                   Text(
                                     'Rp ${item.price.toStringAsFixed(0)} x ${item.quantity}',
@@ -84,15 +77,13 @@ class _CartScreenState extends State<CartScreen> {
                                   Text(
                                     'Rp ${item.totalPrice.toStringAsFixed(0)}',
                                     style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.green,
-                                    ),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.green),
                                   ),
                                 ],
                               ),
                             ),
-                            // Quantity controls
                             Column(
                               children: [
                                 IconButton(
@@ -120,9 +111,7 @@ class _CartScreenState extends State<CartScreen> {
       ),
       bottomNavigationBar: Consumer<CartProvider>(
         builder: (context, cart, child) {
-          if (cart.cartItems.isEmpty) {
-            return const SizedBox.shrink();
-          }
+          if (cart.cartItems.isEmpty) return const SizedBox.shrink();
 
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -130,11 +119,10 @@ class _CartScreenState extends State<CartScreen> {
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 1,
-                  blurRadius: 5,
-                  offset: const Offset(0, -1),
-                ),
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: const Offset(0, -1))
               ],
             ),
             child: Column(
@@ -143,37 +131,26 @@ class _CartScreenState extends State<CartScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Total:',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      'Rp ${cart.totalPrice.toStringAsFixed(0)}',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                      ),
-                    ),
+                    const Text('Total:',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold)),
+                    Text('Rp ${cart.totalPrice.toStringAsFixed(0)}',
+                        style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green)),
                   ],
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(50),
-                  ),
+                      minimumSize: const Size.fromHeight(50)),
                   onPressed: _isLoading
                       ? null
                       : () async {
-                          setState(() {
-                            _isLoading = true;
-                          });
+                          setState(() => _isLoading = true);
 
                           try {
-                            // Prepare order items
                             final orderItems = cart.cartItems.values
                                 .map((item) => {
                                       'menu_id': item.id,
@@ -181,15 +158,12 @@ class _CartScreenState extends State<CartScreen> {
                                     })
                                 .toList();
 
-                            // Create order and handle potential errors
                             final orderResult =
                                 await _orderService.createOrder(orderItems);
 
                             if (!context.mounted) return;
 
-                            // Validate response format
                             if (orderResult['success'] != true ||
-                                !orderResult.containsKey('data') ||
                                 !orderResult['data']
                                     .containsKey('snap_token') ||
                                 !orderResult['data'].containsKey('pesanan') ||
@@ -203,76 +177,85 @@ class _CartScreenState extends State<CartScreen> {
                             final orderId =
                                 orderResult['data']['pesanan']['order_id'];
 
-                            if (!context.mounted) return;
+                            final paymentService = PaymentService(
+                                baseUrl:
+                                    'https://3eacf925b59e.ngrok-free.app'); // ganti sesuai backend
 
-                            // Navigate to payment screen and wait for result
-                            final paymentResult =
-                                await Navigator.push<Map<String, dynamic>>(
+                            // Navigate ke PaymentScreen
+                            final result = await Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => PaymentScreen(
                                   snapToken: snapToken,
                                   orderId: orderId,
+                                  paymentService: paymentService,
                                 ),
                               ),
                             );
 
-                            if (!context.mounted) return;
-
                             // Handle payment result
-                            if (paymentResult != null &&
-                                paymentResult['status'] == 'paid') {
-                              // Payment successful
-                              cart.clearCart();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Pembayaran berhasil'),
-                                  backgroundColor: Colors.green,
-                                ),
-                              );
-                              Navigator.pop(context);
-                            } else if (paymentResult != null &&
-                                paymentResult['status'] == 'pending') {
-                              // Payment pending
-                              cart.clearCart();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                      'Pembayaran dalam proses, silakan cek status pesanan'),
-                                  backgroundColor: Colors.orange,
-                                ),
-                              );
-                              Navigator.pop(context);
-                            } else {
-                              // Payment failed or cancelled
-                              throw Exception(
-                                  'Pembayaran dibatalkan atau gagal');
+                            if (result != null &&
+                                result is Map<String, dynamic>) {
+                              switch (result['status']) {
+                                case 'success':
+                                  cart.clearCart();
+                                  if (!context.mounted) return;
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('Pembayaran berhasil!'),
+                                        backgroundColor: Colors.green),
+                                  );
+                                  Navigator.pop(context);
+                                  break;
+                                case 'pending':
+                                  cart.clearCart();
+                                  if (!context.mounted) return;
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            'Pembayaran dalam proses, silakan cek status pesanan'),
+                                        backgroundColor: Colors.orange),
+                                  );
+                                  Navigator.pop(context);
+                                  break;
+                                case 'failed':
+                                  if (!context.mounted) return;
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('Pembayaran gagal'),
+                                        backgroundColor: Colors.red),
+                                  );
+                                  break;
+                                case 'cancelled':
+                                  if (!context.mounted) return;
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('Pembayaran dibatalkan'),
+                                        backgroundColor: Colors.grey),
+                                  );
+                                  break;
+                              }
                             }
-                          } catch (error) {
+                          } catch (e) {
                             if (!context.mounted) return;
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(error.toString()),
-                                backgroundColor: Colors.red,
-                              ),
+                                  content: Text(e.toString()),
+                                  backgroundColor: Colors.red),
                             );
                           } finally {
-                            if (mounted) {
-                              setState(() {
-                                _isLoading = false;
-                              });
-                            }
+                            if (!mounted) return;
+                            setState(() => _isLoading = false);
                           }
                         },
                   child: _isLoading
                       ? const SizedBox(
-                          height: 20,
                           width: 20,
+                          height: 20,
                           child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.white),
-                          ),
+                              strokeWidth: 2,
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.white)),
                         )
                       : const Text('Bayar Sekarang'),
                 ),
