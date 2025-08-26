@@ -4,7 +4,8 @@ import 'package:http/http.dart' as http;
 import '../models/menu_model.dart';
 
 class MenuService {
-  static const String baseUrl = 'http://192.168.1.16/skripsi-dian-pnp/backend_apk/public/api';
+  static const String baseUrl =
+      'http://192.168.100.48/skripsi-dian-pnp/backend_apk/public/api';
   final storage = const FlutterSecureStorage();
 
   Future<List<MenuItem>> getMenuItems() async {

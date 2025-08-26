@@ -11,8 +11,8 @@ class MenuController extends Controller
 {
     public function index()
     {
-        $menus = Menu::all();  
-        return view('admin.menus.index', compact('menus')); 
+        $menus = Menu::all();
+        return view('admin.menus.index', compact('menus'));
     }
 
     public function create()
@@ -28,6 +28,7 @@ class MenuController extends Controller
             'kategori' => 'nullable',
             'deskripsi' => 'nullable',
             'gambar' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'stok' => 'nullable|integer',
         ]);
 
         $path = null;
@@ -41,6 +42,7 @@ class MenuController extends Controller
             'kategori' => $request->kategori,
             'deskripsi' => $request->deskripsi,
             'gambar' => $path,
+            'stok' => $request->stok,
         ]);
 
         return redirect()->route('admin.menus.index')->with('success', 'Menu berhasil ditambahkan.');
@@ -62,6 +64,7 @@ class MenuController extends Controller
             'kategori' => 'nullable',
             'deskripsi' => 'nullable',
             'gambar' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'stok' => 'nullable|integer',
         ]);
 
         if ($request->hasFile('gambar')) {
@@ -77,6 +80,7 @@ class MenuController extends Controller
             'kategori' => $request->kategori,
             'deskripsi' => $request->deskripsi,
             'gambar' => $menu->gambar,
+            'stok' => $request->stok,
         ]);
 
         return redirect()->route('admin.menus.index')->with('success', 'Menu berhasil diperbarui.');

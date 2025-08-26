@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/midtrans_payment.dart';
 
 class PaymentService {
-  final String baseUrl = 'http://your-backend-url/api';
+  final String baseUrl = 'http://192.168.100.48:8000/api';
 
   Future<String> createPayment({
     required String orderId,

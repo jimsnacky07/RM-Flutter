@@ -5,7 +5,7 @@ import '../models/order_model.dart';
 
 class OrderHistoryService {
   static const String baseUrl =
-      'http://192.168.1.16/skripsi-dian-pnp/backend_apk/public/api';
+      'http://192.168.100.48/skripsi-dian-pnp/backend_apk/public/api';
   final storage = const FlutterSecureStorage();
 
   Future<List<Order>> getOrders() async {

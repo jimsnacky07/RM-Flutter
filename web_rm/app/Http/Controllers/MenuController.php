@@ -54,6 +54,7 @@ class MenuController extends Controller
             'nama' => 'required',
             'harga' => 'required|numeric',
             'keterangan' => 'nullable|string',
+            'stok' => 'nullable|integer',
         ]);
 
         Menu::create($request->all());
@@ -92,6 +93,7 @@ class MenuController extends Controller
             'nama' => 'required',
             'harga' => 'required|numeric',
             'keterangan' => 'nullable|string',
+            'stok' => 'nullable|integer',
         ]);
 
         $menu->update($request->all());
@@ -101,7 +103,7 @@ class MenuController extends Controller
 
     public function destroy($id)
     {
-        $user = Auth::user(); 
+        $user = Auth::user();
         if (!$user) {
             abort(403);
         }

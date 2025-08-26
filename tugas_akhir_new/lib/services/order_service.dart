@@ -4,7 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class OrderService {
   final String baseUrl =
-      'http://192.168.1.16/skripsi-dian-pnp/backend_apk/public/api';
+      'http://192.168.100.48/skripsi-dian-pnp/backend_apk/public/api';
   final storage = const FlutterSecureStorage();
 
   /// =============================
