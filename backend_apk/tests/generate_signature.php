@@ -5,7 +5,7 @@ echo "Generating Midtrans test data...\n\n";
 $orderId = "ORD-31-68ac2579c1699";
 $statusCode = "200";
 $grossAmount = "100000.00";
-$serverKey = "Mid-server-dfoOX8N1GjqrwYTGmFaVup8D";
+$serverKey = "";
 
 $input = $orderId . $statusCode . $grossAmount . $serverKey;
 $signature = hash('sha512', $input);
